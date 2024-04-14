@@ -283,3 +283,80 @@ def visual_directory_structure(path, indent=0):
 # і бот буде виводити повідомлення "Invalid command."
 
 
+def parse_input(user_input):
+    parts = user_input.split()
+    cmd = parts[0].strip().lower()
+    args = parts[1:]
+    return cmd, args
+
+
+def add_contact(args, contacts):
+    if len(args) != 2:
+        return "Invalid command. Usage: add [name] [phone]"
+    name, phone = args
+    contacts[name] = phone
+    return "Contact added."
+
+
+def change_phone(args, contacts):
+    if len(args) != 2:
+        return "Invalid command. Usage: change [name] [phone]"
+    name, phone = args
+    if name not in contacts:
+        return f"Contact with name '{name}' does not exist."
+    contacts[name] = phone
+    return "Contact updated."
+
+
+def show_phone(args, contacts):
+    if len(args) != 1:
+        return "Invalid command. Usage: phone [name]"
+    name = args[0]
+    if name not in contacts:
+        return f"Contact with name '{name}' does not exist."
+    return f"Phone number for {name}: {contacts[name]}"
+
+
+def show_all(contacts):
+    if not contacts:
+        return "No contacts found."
+    for name, phone in contacts.items():
+        print(f"{name}: {phone}")
+    return ""
+
+
+
+
+def main():
+    contacts = {}
+    print('Welcome to the assistant Contact_Bot!')
+    while True:
+        user_input = input("Enter a command: ")
+        command, args = parse_input(user_input)
+
+        if command in ["close", "exit"]:
+            print("Good bye!")
+            break
+
+        elif command == "hello":
+            print("How can I help you?")
+
+        elif command == "add" and len(args) == 2:
+            print(add_contact(args, contacts))
+
+        elif command == "change" and len(args) == 2:
+            print(change_phone(args, contacts))
+
+        elif command == "phone" and len(args) == 1:
+            print(show_phone(args, contacts))    
+
+        elif command == "all":
+            print(show_all(contacts))
+
+        else:
+            print("Invalid command.")
+
+if __name__ == "__main__":
+    main()    
+
+
